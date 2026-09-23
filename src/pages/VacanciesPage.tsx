@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useDebouncedValue } from '@mantine/hooks';
 import { Container, Divider, Group, Stack, Text, Card } from '@mantine/core';
 
@@ -14,32 +15,20 @@ import { fetchJobs } from '../store/jobsSlice';
 
 import styles from './VacanciesPage.module.css';
 
-const DEFAULT_SKILLS = ['JavaScript', 'React', 'Redux', 'Python'];
-
-const getInitialFilters = () => {
-  const params = new URLSearchParams(window.location.search);
-
-  const skillsFromUrl = params.get('skills');
-
-  return {
-    search: params.get('search') || '',
-    city: params.get('city') || '',
-    skills: skillsFromUrl
-      ? skillsFromUrl.split(',').filter(Boolean)
-      : DEFAULT_SKILLS,
-    page: Number(params.get('page')) || 1,
-  };
-};
-
 export const VacanciesPage = () => {
-  const [search, setSearch] = useState(() => getInitialFilters().search);
-  const [city, setCity] = useState(() => getInitialFilters().city);
-  const [skills, setSkills] = useState<string[]>(
-    () => getInitialFilters().skills,
-  );
-  const [newSkill, setNewSkill] = useState('');
-  const [page, setPage] = useState(() => getInitialFilters().page);
+  const [searchParams, setSearchParams] = useSearchParams();
 
+  const search = searchParams.get('search') || '';
+  const city = searchParams.get('city') || '';
+  const skillsParam = searchParams.get('skills');
+  const page = Number(searchParams.get('page')) || 1;
+
+  const skills = useMemo(
+    () => (skillsParam ? skillsParam.split(',').filter(Boolean) : []),
+    [skillsParam],
+  );
+
+  const [newSkill, setNewSkill] = useState('');
   const [debouncedSearch] = useDebouncedValue(search, 500);
 
   const dispatch = useDispatch<AppDispatch>();
@@ -60,39 +49,30 @@ export const VacanciesPage = () => {
     );
   }, [dispatch, debouncedSearch, city, skills, page]);
 
-  useEffect(() => {
-    const params = new URLSearchParams();
+  const updateParams = (updates: Record<string, string | null>) => {
+    const next = new URLSearchParams(searchParams);
 
-    if (search) {
-      params.set('search', search);
-    }
+    Object.entries(updates).forEach(([key, value]) => {
+      if (value === null || value === '') {
+        next.delete(key);
+      } else {
+        next.set(key, value);
+      }
+    });
 
-    if (city) {
-      params.set('city', city);
-    }
+    setSearchParams(next, { replace: true });
+  };
 
-    if (skills.length > 0) {
-      params.set('skills', skills.join(','));
-    }
-
-    params.set('page', String(page));
-
-    const query = params.toString();
-
-    window.history.replaceState(
-      null,
-      '',
-      query ? `?${query}` : window.location.pathname,
-    );
-  }, [search, city, skills, page]);
+  const handleSearchChange = (value: string) => {
+    updateParams({ search: value || null, page: '1' });
+  };
 
   const handleSearch = () => {
-    setPage(1);
+    updateParams({ page: '1' });
   };
 
   const handleCityChange = (value: string) => {
-    setCity(value);
-    setPage(1);
+    updateParams({ city: value || null, page: '1' });
   };
 
   const handleAddSkill = () => {
@@ -111,21 +91,22 @@ export const VacanciesPage = () => {
       return;
     }
 
-    setSkills((currentSkills) => [...currentSkills, skill]);
+    const nextSkills = [...skills, skill];
+    updateParams({ skills: nextSkills.join(','), page: '1' });
     setNewSkill('');
-    setPage(1);
   };
 
   const handleRemoveSkill = (skillToRemove: string) => {
-    setSkills((currentSkills) =>
-      currentSkills.filter((skill) => skill !== skillToRemove),
-    );
+    const nextSkills = skills.filter((skill) => skill !== skillToRemove);
 
-    setPage(1);
+    updateParams({
+      skills: nextSkills.length > 0 ? nextSkills.join(',') : null,
+      page: '1',
+    });
   };
 
   const handlePageChange = (newPage: number) => {
-    setPage(newPage);
+    updateParams({ page: String(newPage) });
 
     window.scrollTo({
       top: 0,
@@ -140,7 +121,6 @@ export const VacanciesPage = () => {
           <div className={styles.topContent}>
             <div className={styles.titleBlock}>
               <h1 className={styles.title}>Список вакансий</h1>
-
               <p className={styles.subtitle}>
                 по профессии Frontend-разработчик
               </p>
@@ -149,7 +129,7 @@ export const VacanciesPage = () => {
             <div className={styles.searchBlock}>
               <SearchBar
                 value={search}
-                onChange={setSearch}
+                onChange={handleSearchChange}
                 onSearch={handleSearch}
                 loading={loading}
               />
@@ -162,12 +142,7 @@ export const VacanciesPage = () => {
 
       <Container size="xl" py="xl">
         <Group align="flex-start" wrap="nowrap" gap="xl">
-          <aside
-            style={{
-              width: 300,
-              flexShrink: 0,
-            }}
-          >
+          <aside style={{ width: 300, flexShrink: 0 }}>
             <Stack gap="md">
               <Card withBorder padding="md" radius="md" bg="white">
                 <SkillsFilter
@@ -180,21 +155,12 @@ export const VacanciesPage = () => {
               </Card>
 
               <Card withBorder padding="md" radius="md" bg="white">
-                <CitySelect
-                  value={city}
-                  onChange={handleCityChange}
-                />
+                <CitySelect value={city} onChange={handleCityChange} />
               </Card>
             </Stack>
           </aside>
 
-          <Stack
-            gap="md"
-            style={{
-              flex: 1,
-              minWidth: 0,
-            }}
-          >
+          <Stack gap="md" style={{ flex: 1, minWidth: 0 }}>
             {loading && (
               <Text ta="center" py="xl">
                 Загрузка вакансий...
@@ -215,9 +181,7 @@ export const VacanciesPage = () => {
 
             {!loading &&
               !error &&
-              jobs.map((job) => (
-                <JobCard key={job.id} job={job} />
-              ))}
+              jobs.map((job) => <JobCard key={job.id} job={job} />)}
 
             {!loading && !error && jobs.length > 0 && (
               <Pagination
