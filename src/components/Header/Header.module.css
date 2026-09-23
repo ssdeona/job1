@@ -1,0 +1,124 @@
+.header {
+  position: relative;
+  width: 100%;
+  height: 64px;
+
+  display: flex;
+  align-items: center;
+
+  background-color: #ffffff;
+  border-bottom: 1px solid #eeeeee;
+
+  padding: 0 32px;
+}
+
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.logoHh {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 28px;
+  height: 28px;
+
+  border-radius: 50%;
+
+  background-color: #e30613;
+  color: #ffffff;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.logoText {
+  color: #171717;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+
+
+.navigation {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  transform: translate(-50%, -50%);
+
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+
+
+.vacanciesButton {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  padding: 0;
+
+  border: none;
+  background: transparent;
+
+  color: #171717;
+
+  font-size: 14px;
+  font-weight: 400;
+
+  text-decoration: none;
+
+  cursor: pointer;
+}
+
+.vacanciesButton:hover {
+  opacity: 0.7;
+}
+
+
+
+.dot {
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background-color: #4169e1;
+}
+
+
+
+.aboutButton {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  padding: 0;
+
+  border: none;
+  background: transparent;
+
+  color: #999999;
+
+  font-size: 14px;
+  font-weight: 400;
+
+  text-decoration: none;
+
+  cursor: pointer;
+}
+
+.aboutButton:hover {
+  color: #666666;
+}

@@ -1,0 +1,24 @@
+.page {
+  min-height: calc(100vh - 64px);
+  background-color: #f6f6f7;
+  padding-top: 18px;
+}
+
+.card {
+  padding: 18px 18px;
+  border-radius: 8px;
+  background-color: #ffffff;
+}
+
+.title {
+  margin-bottom: 8px;
+  color: #171717;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.text {
+  color: #171717;
+  font-size: 13px;
+  line-height: 1.5;
+}

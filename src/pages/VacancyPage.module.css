@@ -1,0 +1,194 @@
+.page {
+  min-height: calc(100vh - 64px);
+  background-color: #f5f5f5;
+  padding: 24px 20px 52px;
+}
+
+.container {
+  width: 100%;
+  max-width: 700px;   
+  margin: 0 auto;
+}
+
+
+
+.vacancyCard {
+  background-color: #ffffff;
+  border-radius: 9px;
+  padding: 24px 24px 22px;
+  margin-bottom: 17px;
+}
+
+.title {
+  margin: 0 0 14px;
+  color: rgba(54, 79, 199, 1);   
+  font-size: 23px;
+  line-height: 1.25;
+  font-weight: 500;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 14px;
+}
+
+.salary {
+  color: #171717;
+  font-size: 17px;
+  line-height: 1.3;
+  font-weight: 400;
+}
+
+.experience {
+  color: #999999;
+  font-size: 16px;
+  line-height: 1.3;
+  font-weight: 400;
+}
+
+.company {
+  margin-bottom: 14px;
+  color: #999999;
+  font-size: 16px;
+  line-height: 1.3;
+}
+
+.location {
+  margin-top: 6px;
+  color: #171717;
+  font-size: 18px;
+  line-height: 1.3;
+}
+
+
+.space {
+  width: fit-content;
+  margin-top: 8px;
+  padding: 2px 6px;
+  border-radius: 2px;
+  background: #4169e1;
+  color: #ffffff;
+  font-size: 11px;
+  line-height: 1.3;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+
+.spaceRemote {
+  width: fit-content;
+  margin-top: 8px;
+  padding: 2px 6px;
+  border-radius: 2px;
+  background: rgba(66, 99, 235, 1);
+  color: #ffffff;
+  font-size: 11px;
+  line-height: 1.3;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+
+.spaceOffice {
+  width: fit-content;
+  margin-top: 8px;
+  padding: 2px 6px;
+  border-radius: 2px;
+  background: rgba(15, 15, 16, 0.1);
+  color: rgba(15, 15, 16, 0.5);
+  font-size: 11px;
+  line-height: 1.3;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+
+.spaceHybrid {
+  width: fit-content;
+  margin-top: 8px;
+  padding: 2px 6px;
+  border-radius: 2px;
+  background: #000000;
+  color: #ffffff;
+  font-size: 11px;
+  line-height: 1.3;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+
+
+.descriptionCard {
+  background-color: #ffffff;
+  border-radius: 9px;
+  padding: 24px;
+}
+
+.descriptionCard h2 {
+  margin: 0 0 16px;
+  color: #222222;
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 600;
+}
+
+.descriptionCard h3 {
+  margin: 22px 0 12px;
+  color: #222222;
+  font-size: 17px;
+  line-height: 24px;
+  font-weight: 600;
+}
+
+.descriptionCard p {
+  margin: 0;
+  color: #333333;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+
+
+@media (max-width: 600px) {
+  .page {
+    padding: 16px;
+  }
+
+  .container {
+    max-width: none;
+  }
+
+  .vacancyCard,
+  .descriptionCard {
+    padding: 20px;
+  }
+
+  .title {
+    font-size: 20px;
+    line-height: 26px;
+  }
+
+  .salary {
+    font-size: 17px;
+  }
+
+  .experience,
+  .company {
+    font-size: 15px;
+  }
+
+  .location {
+    font-size: 16px;
+  }
+
+  .descriptionCard h2 {
+    font-size: 19px;
+  }
+
+  .descriptionCard p {
+    font-size: 15px;
+    line-height: 22px;
+  }
+}
